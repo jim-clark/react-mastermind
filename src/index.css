@@ -13,14 +13,4 @@ code {
     monospace;
 }
 
-.component {
-  border: 2px dotted red;
-  margin: 4px;
-  padding: 4px;
-}
-
-.flex-h {
-  display: flex;
-  justify-content: center;
-}
 
