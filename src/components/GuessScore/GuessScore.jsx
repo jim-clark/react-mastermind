@@ -34,7 +34,8 @@ const GuessScore = ({ score }) => {
         <div
           key={idx}
           style={Object.assign({}, baseStyle, pegStyles[score])}
-        />)}
+        />
+      )}
     </div>
   );
 }

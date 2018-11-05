@@ -11,8 +11,7 @@ const ColorPicker = (props) => (
           backgroundColor: props.selColorIdx === idx ? 'white' : color,
           borderColor: color
         }}
-      >
-      </button>
+      />
     )}
   </div>
 );
