@@ -49,7 +49,10 @@ class App extends Component {
           colors={this.state.colors}
         />
         <div>
-          <ColorPicker colors={this.state.colors} />
+          <ColorPicker
+            colors={this.state.colors}
+            selColorIdx={this.state.selColorIdx}
+          />
           <NewGameButton />
         </div>
         <footer>{(winTries ? `You Won in ${winTries} Guesses!` : 'Good Luck!')}</footer>
