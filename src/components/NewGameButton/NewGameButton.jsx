@@ -1,7 +1,7 @@
 import React from 'react';
 
 const NewGameButton = (props) => (
-  <button>
+  <button className="btn btn-default">
     New Game
   </button>
 );

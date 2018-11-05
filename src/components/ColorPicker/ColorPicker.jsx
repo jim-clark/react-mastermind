@@ -1,9 +1,18 @@
 import React from 'react';
+import styles from './ColorPicker.module.css';
 
 const ColorPicker = (props) => (
-  <div>
-    {props.colors.map((color) =>
-      <button color={color} key={color}>{color}</button>
+  <div className={styles.ColorPicker}>
+    {props.colors.map((color, idx) =>
+      <button
+        key={color}
+        className={styles.button}
+        style={{
+          backgroundColor: props.selColorIdx === idx ? 'white' : color,
+          borderColor: color
+        }}
+      >
+      </button>
     )}
   </div>
 );

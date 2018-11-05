@@ -14,7 +14,7 @@ class App extends Component {
       colors,
       code: this.genCode(colors.length),
       selColorIdx: 0,
-      guesses: [this.getNewGuess(), this.getNewGuess()]
+      guesses: [this.getNewGuess(), this.getNewGuess(), this.getNewGuess(), this.getNewGuess()]
     };
   }
 
@@ -43,19 +43,23 @@ class App extends Component {
     let winTries = this.getWinTries();
     return (
       <div>
-        <header className="App-header">React Mastermind</header>
-        <GameBoard
-          guesses={this.state.guesses}
-          colors={this.state.colors}
-        />
-        <div>
-          <ColorPicker
+        <header className='App-header-footer'>React Mastermind</header>
+        <div className='App-game'>
+          <GameBoard
+            guesses={this.state.guesses}
             colors={this.state.colors}
-            selColorIdx={this.state.selColorIdx}
           />
-          <NewGameButton />
+          <div className='App-controls'>
+            <ColorPicker
+              colors={this.state.colors}
+              selColorIdx={this.state.selColorIdx}
+            />
+            <NewGameButton />
+          </div>
         </div>
-        <footer>{(winTries ? `You Won in ${winTries} Guesses!` : 'Good Luck!')}</footer>
+        <footer className='App-header-footer'>
+          {(winTries ? `You Won in ${winTries} Guesses!` : 'Good Luck!')}
+        </footer>
       </div>
     );
   }
