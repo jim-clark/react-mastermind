@@ -43,7 +43,7 @@ class App extends Component {
     let winTries = this.getWinTries();
     return (
       <div>
-        <header className='App-header-footer'>React Mastermind</header>
+        <header className='App-header-footer'>R E A C T   M A S T E R M I N D</header>
         <div className='App-game'>
           <GameBoard
             guesses={this.state.guesses}
