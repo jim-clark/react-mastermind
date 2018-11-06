@@ -1,7 +1,11 @@
 import React from 'react';
+import styles from './NewGameButton.module.css';
 
 const NewGameButton = (props) => (
-  <button className="btn btn-default">
+  <button
+    className={`${styles.button} btn btn-default`}
+    onClick={props.handleNewGameClick}
+  >
     New Game
   </button>
 );
