@@ -46,7 +46,11 @@ class App extends Component {
     let winTries = this.getWinTries();
     return (
       <div>
-        <header className='App-header-footer'>React Mastermind</header>
+<<<<<<< HEAD
+        <header className='App-header-footer'>R E A C T &nbsp;&nbsp;&nbsp;  M A S T E R M I N D</header>
+=======
+        <header className='App-header-footer'>R E A C T   M A S T E R M I N D</header>
+>>>>>>> e0e6d7edaa93c54d0165a9e59ec9e601c187be64
         <div className='App-game'>
           <GameBoard
             guesses={this.state.guesses}
