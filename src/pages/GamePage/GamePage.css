@@ -1,26 +1,22 @@
-.App {
+.GamePage {
   display: flex;
   flex-flow: column nowrap;
 }
 
-.App-header-footer {
-  height: 50px;
-  padding: 10px;
-  margin: 15px 0;
-  color: grey;
-  font-size: 18px;
-  text-align: center;
-}
-
-.App-game {
+.GamePage-game {
   display: flex;
   flex-flow: row nowrap;
   justify-content: center;
 }
 
-.App-controls {
+.GamePage-controls {
   display: flex;
   flex-flow: column nowrap;
   justify-content: space-between;
   margin-left: 20px;
 }
+
+.GamePage-nav {
+  width: 115px;
+}
+
