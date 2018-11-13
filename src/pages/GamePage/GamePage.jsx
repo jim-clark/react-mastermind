@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import './GamePage.css';
 import GameBoard from '../../components/GameBoard/GameBoard';
 import ColorPicker from '../../components/ColorPicker/ColorPicker';
@@ -31,8 +31,9 @@ const GamePage = (props) => {
             isTiming={props.isTiming}
             handleTimerUpdate={props.handleTimerUpdate}
           />
-          <Link className='btn btn-default' style={{margin: '0 10px'}} to='/settings'>Difficulty</Link>
-          <NewGameButton handleNewGameClick={props.handleNewGameClick}/>
+          <Link className='btn btn-default GamePage-button' to='/high-scores'>High Scores</Link>
+          <Link className='btn btn-default' style={{ margin: '0 10px' }} to='/settings'>Difficulty</Link>
+          <NewGameButton handleNewGameClick={props.handleNewGameClick} />
         </div>
       </div>
       <footer className='header-footer'>{(winTries ? `You Won in ${winTries} Guesses!` : 'Good Luck!')}</footer>

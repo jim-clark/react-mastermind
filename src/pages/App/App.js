@@ -7,6 +7,7 @@ import {
 import './App.css';
 import GamePage from '../GamePage/GamePage';
 import SettingsPage from '../SettingsPage/SettingsPage';
+import HighScoresPage from '../HighScoresPage/HighScoresPage';
 
 let colorTable = [
   { name: 'Easy', colors: ['#7CCCE5', '#FDE47F', '#E04644', '#B576AD'] },
@@ -16,7 +17,6 @@ let colorTable = [
 
 class App extends Component {
   constructor(props) {
-    console.log('App: constructor');
     super(props);
     this.state = Object.assign(
       { difficultyLevel: 0, colors: colorTable[0].colors },
@@ -55,6 +55,14 @@ class App extends Component {
       difficultyLevel: level,
       colors: colorTable[level].colors
     });
+  }
+
+  isHighScore = (guessesCopy) => {
+    let lastScore = this.state.scores[this.state.scores.length - 1];
+    return (guessesCopy.length < lastScore.numGuesses || (
+      guessesCopy.length === lastScore.numGuesses &&
+      this.state.finalTime < lastScore.seconds
+    ));
   }
 
   /*---------- Callback Methods ----------*/
@@ -123,8 +131,37 @@ class App extends Component {
     guessesCopy[currentGuessIdx].score.perfect = perfect;
     guessesCopy[currentGuessIdx].score.almost = almost;
 
-    // Add a new guess if not a winner
-    if (perfect !== 4) guessesCopy.push(this.getNewGuess());
+    if (perfect === 4) {
+      this.setState(
+        (prevState) => ({ finalTime: this.elapsedTime }),
+        // do the rest of the win logic in this callback
+        () => {
+          // Check if high-score
+          if (this.state.scores.length < 20 || this.isHighScore(guessesCopy)) {
+            let initials = prompt('Congrats, you have a high score!\nPlease enter your initials:');
+            fetch('/api/scores', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ initials, numGuesses: guessesCopy.length, seconds: this.state.finalTime })
+            })
+            .then(res => res.json())
+            .then(() => {
+              fetch('/api/highscores')
+              .then(res => res.json())
+              .then(highScores => {
+                this.setState({ scores: highScores });
+                // Note how routing has been refactored in index.js
+                // so that we can access the history object
+                this.props.history.push('/high-scores');
+              });
+            });
+          }
+        }
+      );
+    } else {
+      // Add a new guess if not a winner
+      guessesCopy.push(this.getNewGuess());
+    }
 
     // Finally, update the state with the NEW guesses array
     // and let GameTimer know if it's still timing
@@ -142,15 +179,14 @@ class App extends Component {
   /*---------- Lifecycle Methods ----------*/
 
   componentDidMount() {
-    console.log('App: componentDidMount');
-  }
-
-  componentDidUpdate() {
-    console.log('App: componentDidUpdate');
+    fetch('/api/highscores')
+      .then(res => res.json())
+      .then(scores => {
+        this.setState({ scores });
+      });
   }
 
   render() {
-    console.log('App: render');
     return (
       <div>
         <header className='header-footer'>R E A C T &nbsp;&nbsp;&nbsp;  M A S T E R M I N D</header>
@@ -176,6 +212,11 @@ class App extends Component {
                 handleDifficultyChange={this.setDifficulty}
                 handleNewGame={this.handleNewGameClick}
                 history={history}
+              />
+            } />
+            <Route exact path='/high-scores' render={() =>
+              <HighScoresPage
+                scores={this.state.scores}
               />
             } />
           </Switch>
