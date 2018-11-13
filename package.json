@@ -3,9 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "ajv": "^6.5.4",
     "express": "^4.16.4",
-    "fsevents": "^1.2.4",
     "morgan": "^1.9.1",
     "react": "^16.6.0",
     "react-dom": "^16.6.0",
