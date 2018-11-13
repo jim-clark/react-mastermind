@@ -43,7 +43,7 @@ class App extends Component {
   }
 
   genCode(size) {
-    return new Array(size).fill().map(dummy => Math.floor(Math.random() * size));
+    return new Array(4).fill().map(dummy => Math.floor(Math.random() * size));
   }
 
   setDifficulty = (level) => {
