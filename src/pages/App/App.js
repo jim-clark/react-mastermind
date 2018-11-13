@@ -16,11 +16,14 @@ let colorTable = [
 
 class App extends Component {
   constructor(props) {
+    console.log('App: constructor');
     super(props);
     this.state = Object.assign(
       { difficultyLevel: 0, colors: colorTable[0].colors },
       this.getInitialState()
     );
+    // Data that you don't want to trigger rendering
+    this.elapsedTime = 0;
   }
 
   getInitialState() {
@@ -28,7 +31,8 @@ class App extends Component {
     return {
       code: this.genCode(colorTable[colorIdx].colors.length),
       selColorIdx: 0,
-      guesses: [this.getNewGuess()]
+      guesses: [this.getNewGuess()],
+      isTiming: true
     };
   }
 
@@ -43,7 +47,7 @@ class App extends Component {
   }
 
   genCode(size) {
-    return new Array(size).fill().map(dummy => Math.floor(Math.random() * size));
+    return new Array(4).fill().map(dummy => Math.floor(Math.random() * size));
   }
 
   setDifficulty = (level) => {
@@ -60,6 +64,7 @@ class App extends Component {
   }
 
   handleNewGameClick = () => {
+    this.resetTimer();
     this.setState(this.getInitialState());
   }
 
@@ -122,12 +127,30 @@ class App extends Component {
     if (perfect !== 4) guessesCopy.push(this.getNewGuess());
 
     // Finally, update the state with the NEW guesses array
+    // and let GameTimer know if it's still timing
     this.setState({
-      guesses: guessesCopy
+      guesses: guessesCopy,
+      isTiming: perfect !== 4
     });
   }
 
+  handleTimerUpdate = (seconds, resetFn) => {
+    this.resetTimer = resetFn;
+    this.elapsedTime = seconds;
+  }
+
+  /*---------- Lifecycle Methods ----------*/
+
+  componentDidMount() {
+    console.log('App: componentDidMount');
+  }
+
+  componentDidUpdate() {
+    console.log('App: componentDidUpdate');
+  }
+
   render() {
+    console.log('App: render');
     return (
       <div>
         <header className='header-footer'>R E A C T &nbsp;&nbsp;&nbsp;  M A S T E R M I N D</header>
@@ -138,10 +161,12 @@ class App extends Component {
                 colors={this.state.colors}
                 selColorIdx={this.state.selColorIdx}
                 guesses={this.state.guesses}
+                isTiming={this.state.isTiming}
                 handleColorSelection={this.handleColorSelection}
                 handleNewGameClick={this.handleNewGameClick}
                 handlePegClick={this.handlePegClick}
                 handleScoreClick={this.handleScoreClick}
+                handleTimerUpdate={this.handleTimerUpdate}
               />
             } />
             <Route exact path='/settings' render={({ history }) =>
