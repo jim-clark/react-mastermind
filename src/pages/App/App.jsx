@@ -8,6 +8,8 @@ import './App.css';
 import GamePage from '../GamePage/GamePage';
 import SettingsPage from '../SettingsPage/SettingsPage';
 import HighScoresPage from '../HighScoresPage/HighScoresPage';
+import SignupPage from '../SignupPage/SignupPage';
+import LoginPage from '../LoginPage/LoginPage';
 
 let colorTable = [
   { name: 'Easy', colors: ['#7CCCE5', '#FDE47F', '#E04644', '#B576AD'] },
@@ -179,7 +181,7 @@ class App extends Component {
   /*---------- Lifecycle Methods ----------*/
 
   componentDidMount() {
-    fetch('/api/highscores')
+    fetch('/api/scores')
       .then(res => res.json())
       .then(scores => {
         this.setState({ scores });
@@ -214,11 +216,20 @@ class App extends Component {
                 history={history}
               />
             } />
-            <Route exact path='/high-scores' render={() =>
-              <HighScoresPage
-                scores={this.state.scores}
+            <Route exact path='/signup' render={({ history }) => 
+              <SignupPage
+                history={history}
+                
               />
-            } />
+            }/>
+            <Route exact path='/login' render={() => 
+              <LoginPage
+                
+              />
+            }/>
+            <Route exact path='/high-scores' render={() => 
+              <HighScoresPage scores={this.state.scores} />
+            }/>
           </Switch>
         </Router>
       </div>

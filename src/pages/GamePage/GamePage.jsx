@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './GamePage.css';
+import NavBar from '../../components/NavBar/NavBar';
 import GameBoard from '../../components/GameBoard/GameBoard';
 import ColorPicker from '../../components/ColorPicker/ColorPicker';
 import NewGameButton from '../../components/NewGameButton/NewGameButton';
@@ -14,6 +15,7 @@ const GamePage = (props) => {
 
   return (
     <div className="GamePage">
+      <NavBar />
       <div className="GamePage-game">
         <GameBoard
           guesses={props.guesses}
