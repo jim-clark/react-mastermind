@@ -16,6 +16,7 @@ function create(req, res) {
 }
 
 function highScores(req, res) {
+  console.log(req.user);
   Score.find({})
   .sort({numGuesses: 1, seconds: 1})
   // default to a limit of 20 high scores

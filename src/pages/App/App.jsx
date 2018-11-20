@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import {
   BrowserRouter as Router,
   Switch,
-  Route
+  Route,
+  Redirect
 } from 'react-router-dom';
 import './App.css';
 import userService from '../../utils/userService';
@@ -147,17 +148,17 @@ class App extends Component {
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ initials, numGuesses: guessesCopy.length, seconds: this.state.finalTime })
             })
-            .then(res => res.json())
-            .then(() => {
-              fetch('/api/highscores')
               .then(res => res.json())
-              .then(highScores => {
-                this.setState({ scores: highScores });
-                // Note how routing has been refactored in index.js
-                // so that we can access the history object
-                this.props.history.push('/high-scores');
+              .then(() => {
+                fetch('/api/highscores')
+                  .then(res => res.json())
+                  .then(highScores => {
+                    this.setState({ scores: highScores });
+                    // Note how routing has been refactored in index.js
+                    // so that we can access the history object
+                    this.props.history.push('/high-scores');
+                  });
               });
-            });
           }
         }
       );
@@ -181,22 +182,22 @@ class App extends Component {
 
   handleLogout = () => {
     userService.logout();
-    this.setState({user: null});
+    this.setState({ user: null });
   }
 
   handleSignupOrLogin = () => {
-    this.setState({user: userService.getUser()});
+    this.setState({ user: userService.getUser() });
   }
 
   handleUpdateScores = (scores) => {
-    this.setState({scores});
+    this.setState({ scores });
   }
 
   /*---------- Lifecycle Methods ----------*/
 
   componentDidMount() {
     let user = userService.getUser();
-    this.setState({user});
+    this.setState({ user });
   }
 
   render() {
@@ -229,24 +230,27 @@ class App extends Component {
                 history={history}
               />
             } />
-            <Route exact path='/signup' render={({ history }) => 
+            <Route exact path='/signup' render={({ history }) =>
               <SignupPage
                 history={history}
                 handleSignupOrLogin={this.handleSignupOrLogin}
               />
-            }/>
-            <Route exact path='/login' render={(props) => 
+            } />
+            <Route exact path='/login' render={(props) =>
               <LoginPage
                 {...props}
                 handleLogin={this.handleLogin}
               />
-            }/>
-            <Route exact path='/high-scores' render={() => 
-              <HighScoresPage
-                scores={this.state.scores}
-                handleUpdateScores={this.handleUpdateScores}
-              />
-            }/>
+            } />
+            <Route exact path='/high-scores' render={() => (
+              userService.getUser() ?
+                <HighScoresPage
+                  scores={this.state.scores}
+                  handleUpdateScores={this.handleUpdateScores}
+                />
+                :
+                <Redirect to='/login' />
+            )} />
           </Switch>
         </Router>
       </div>
