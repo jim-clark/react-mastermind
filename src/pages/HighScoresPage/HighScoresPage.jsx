@@ -4,7 +4,7 @@ import styles from './HighScoresPage.module.css';
 
 const HighScoresPage = (props) => {
 
-  const scoreRows = props.scores && props.scores.map((score, idx) => (
+  const scoreRows = props.scores.map((score, idx) => (
     <tr key={idx}>
       <td><span className="badge">{idx + 1}</span></td>
       <td>{score.initials}</td>
@@ -16,7 +16,7 @@ const HighScoresPage = (props) => {
   return (
     <div className={styles.HighScores}>
       <header className='header-footer'>High Scores</header>
-      {props.scores && props.scores.length ? 
+      {props.scores.length ? 
         <table className={`${styles.table} table text-info`}>
           <thead>
             <tr><th width={80}>#</th><th width={100}>Initials</th><th width={100}>Guesses</th><th>Seconds</th></tr>

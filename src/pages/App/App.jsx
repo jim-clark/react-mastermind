@@ -21,7 +21,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = Object.assign(
-      { difficultyLevel: 0, colors: colorTable[0].colors },
+      { scores: [], difficultyLevel: 0, colors: colorTable[0].colors },
       this.getInitialState()
     );
     // Data that you don't want to trigger rendering
