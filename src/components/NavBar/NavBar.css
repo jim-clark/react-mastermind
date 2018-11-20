@@ -7,3 +7,7 @@
 .NavBar-link {
   margin: 0 10px;
 }
+
+.NavBar-welcome {
+  color: grey;
+}

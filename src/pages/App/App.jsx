@@ -5,6 +5,7 @@ import {
   Route
 } from 'react-router-dom';
 import './App.css';
+import userService from '../../utils/userService';
 import GamePage from '../GamePage/GamePage';
 import SettingsPage from '../SettingsPage/SettingsPage';
 import HighScoresPage from '../HighScoresPage/HighScoresPage';
@@ -21,7 +22,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = Object.assign(
-      { difficultyLevel: 0, colors: colorTable[0].colors },
+      { scores: [], difficultyLevel: 0, colors: colorTable[0].colors },
       this.getInitialState()
     );
     // Data that you don't want to trigger rendering
@@ -178,14 +179,28 @@ class App extends Component {
     this.elapsedTime = seconds;
   }
 
+  handleLogout = () => {
+    userService.logout();
+    this.setState({user: null});
+  }
+
+  handleSignup = () => {
+    this.setState({user: userService.getUser()});
+  }
+
+  handleLogin = () => {
+    this.setState({user: userService.getUser()});
+  }
+
+  handleUpdateScores = (scores) => {
+    this.setState({scores});
+  }
+
   /*---------- Lifecycle Methods ----------*/
 
   componentDidMount() {
-    fetch('/api/scores')
-      .then(res => res.json())
-      .then(scores => {
-        this.setState({ scores });
-      });
+    let user = userService.getUser();
+    this.setState({user});
   }
 
   render() {
@@ -205,6 +220,8 @@ class App extends Component {
                 handlePegClick={this.handlePegClick}
                 handleScoreClick={this.handleScoreClick}
                 handleTimerUpdate={this.handleTimerUpdate}
+                handleLogout={this.handleLogout}
+                user={this.state.user}
               />
             } />
             <Route exact path='/settings' render={({ history }) =>
@@ -219,16 +236,20 @@ class App extends Component {
             <Route exact path='/signup' render={({ history }) => 
               <SignupPage
                 history={history}
-                
+                handleSignup={this.handleSignup}
               />
             }/>
-            <Route exact path='/login' render={() => 
+            <Route exact path='/login' render={(props) => 
               <LoginPage
-                
+                {...props}
+                handleLogin={this.handleLogin}
               />
             }/>
             <Route exact path='/high-scores' render={() => 
-              <HighScoresPage scores={this.state.scores} />
+              <HighScoresPage
+                scores={this.state.scores}
+                handleUpdateScores={this.handleUpdateScores}
+              />
             }/>
           </Switch>
         </Router>
