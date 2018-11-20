@@ -23,7 +23,7 @@ class LoginPage extends Component {
     e.preventDefault();
     userService.login(this.state)
       .then(() => {
-        this.props.handleLogin();
+        this.props.handleSignupOrLogin();
         this.props.history.push('/');
       })
       // invalid credentials - don't alert in YOUR app :)
