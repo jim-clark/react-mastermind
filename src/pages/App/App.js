@@ -22,8 +22,6 @@ class App extends Component {
       { difficultyLevel: 0, colors: colorTable[0].colors },
       this.getInitialState()
     );
-    // Data that you don't want to trigger rendering
-    this.elapsedTime = 0;
   }
 
   getInitialState() {
@@ -32,6 +30,7 @@ class App extends Component {
       code: this.genCode(colorTable[colorIdx].colors.length),
       selColorIdx: 0,
       guesses: [this.getNewGuess()],
+      elapsedTime: 0,
       isTiming: true
     };
   }
@@ -64,7 +63,6 @@ class App extends Component {
   }
 
   handleNewGameClick = () => {
-    this.resetTimer();
     this.setState(this.getInitialState());
   }
 
