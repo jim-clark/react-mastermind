@@ -134,9 +134,8 @@ class App extends Component {
     });
   }
 
-  handleTimerUpdate = (seconds, resetFn) => {
-    this.resetTimer = resetFn;
-    this.elapsedTime = seconds;
+  handleTimerUpdate = (seconds) => {
+    this.setState((curState) => ({elapsedTime: ++curState.elapsedTime}));
   }
 
   /*---------- Lifecycle Methods ----------*/
@@ -161,6 +160,7 @@ class App extends Component {
                 colors={this.state.colors}
                 selColorIdx={this.state.selColorIdx}
                 guesses={this.state.guesses}
+                elapsedTime={this.state.elapsedTime}
                 isTiming={this.state.isTiming}
                 handleColorSelection={this.handleColorSelection}
                 handleNewGameClick={this.handleNewGameClick}
