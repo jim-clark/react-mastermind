@@ -35,6 +35,7 @@ const GamePage = (props) => {
           <GameTimer
             isTiming={props.isTiming}
             handleTimerUpdate={props.handleTimerUpdate}
+            startTime={props.startTime}
           />
           <Link className='btn btn-default GamePage-button' to='/high-scores'>High Scores</Link>
           <Link className='btn btn-default' style={{ margin: '0 10px' }} to='/settings'>Difficulty</Link>

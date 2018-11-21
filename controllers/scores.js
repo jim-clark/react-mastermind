@@ -7,8 +7,8 @@ module.exports = {
 
 function create(req, res) {
   Score.create(req.body)
-  .then(score => {
-    res.json(score);
+  .then(() => {
+    highScores(req, res);
   })
   .catch(err => {
     res.json({error: err});

@@ -11,6 +11,18 @@ function index() {
   .then(scores => scores);
 }
 
+function create(score) {
+  var options = getAuthRequestOptions('POST');
+  options.headers.append('Content-type', 'application/json');
+  options.body = JSON.stringify(score)
+  return fetch(BASE_URL, options)
+    .then(res => {
+      if (res.ok) return res.json();
+      throw new Error('Authorization Required');
+    })
+    .then(score => score);
+}
+
 /*----- Helper Functions -----*/
 
 function getAuthRequestOptions(method) {
@@ -21,5 +33,6 @@ function getAuthRequestOptions(method) {
 }
 
 export default {
-  index
+  index,
+  create
 };

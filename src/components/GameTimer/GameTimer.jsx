@@ -1,16 +1,11 @@
 import React, { Component } from 'react';
 import styles from './GameTimer.module.css';
-
-function formatTime(seconds) {
-  let mins = Math.floor(seconds / 60).toString().padStart(2, '0');
-  let secs = (seconds % 60).toString().padStart(2, '0');
-  return `${mins}:${secs}`;
-}
+import { formatTime } from '../../utils/utilities';
 
 class GameTimer extends Component {
   // ES7+ Class property syntax
   state = {
-    elapsedTime: 0
+    elapsedTime: this.props.startTime
   };
 
   handleTick = () => {

@@ -2,8 +2,17 @@ var express = require('express');
 var router = express.Router();
 var scoresCtrl = require('../../controllers/scores');
 
-// TODO: Protect these routes with custom middleware
-router.get('/', scoresCtrl.highScores);
-router.post('/', scoresCtrl.create);
+/*--- Protected Routes ---*/
+
+router.get('/', checkAuth, scoresCtrl.highScores);
+router.post('/', checkAuth, scoresCtrl.create);
+
+
+/*----- Helper Functions -----*/
+
+function checkAuth(req, res, next) {
+  if (req.user) return next();
+  return res.status(401).json({msg: 'Not Authenticated'});
+}
 
 module.exports = router;

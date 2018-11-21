@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import {
-  BrowserRouter as Router,
   Switch,
   Route,
   Redirect
 } from 'react-router-dom';
 import './App.css';
 import userService from '../../utils/userService';
+import scoresService from '../../utils/scoresService';
 import GamePage from '../GamePage/GamePage';
 import SettingsPage from '../SettingsPage/SettingsPage';
 import HighScoresPage from '../HighScoresPage/HighScoresPage';
@@ -55,6 +55,7 @@ class App extends Component {
   }
 
   setDifficulty = (level) => {
+    this.elapsedTime = 0;
     this.setState({
       difficultyLevel: level,
       colors: colorTable[level].colors
@@ -141,24 +142,14 @@ class App extends Component {
         // do the rest of the win logic in this callback
         () => {
           // Check if high-score
-          if (this.state.scores.length < 20 || this.isHighScore(guessesCopy)) {
-            let initials = prompt('Congrats, you have a high score!\nPlease enter your initials:');
-            fetch('/api/scores', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ initials, numGuesses: guessesCopy.length, seconds: this.state.finalTime })
-            })
-              .then(res => res.json())
-              .then(() => {
-                fetch('/api/highscores')
-                  .then(res => res.json())
-                  .then(highScores => {
-                    this.setState({ scores: highScores });
-                    // Note how routing has been refactored in index.js
-                    // so that we can access the history object
-                    this.props.history.push('/high-scores');
-                  });
-              });
+          if ((this.state.scores.length < 20 || this.isHighScore(guessesCopy)) && this.state.user) {
+            let initials = this.state.user.name.split(' ').map(name => name[0].toUpperCase()).join('');
+            scoresService.create({ initials, numGuesses: guessesCopy.length, seconds: this.state.finalTime })
+            .then(() => {
+              alert('Congrats, you have a top 20 score!');
+              // routing to /high-scores will fetch new top 20 list
+              this.props.history.push('/high-scores');
+            });
           }
         }
       );
@@ -204,7 +195,6 @@ class App extends Component {
     return (
       <div>
         <header className='header-footer'>R E A C T &nbsp;&nbsp;&nbsp;  M A S T E R M I N D</header>
-        <Router>
           <Switch>
             <Route exact path='/' render={() =>
               <GamePage
@@ -219,6 +209,7 @@ class App extends Component {
                 handleTimerUpdate={this.handleTimerUpdate}
                 handleLogout={this.handleLogout}
                 user={this.state.user}
+                startTime={this.elapsedTime}
               />
             } />
             <Route exact path='/settings' render={({ history }) =>
@@ -239,7 +230,7 @@ class App extends Component {
             <Route exact path='/login' render={(props) =>
               <LoginPage
                 {...props}
-                handleLogin={this.handleLogin}
+                handleSignupOrLogin={this.handleSignupOrLogin}
               />
             } />
             <Route exact path='/high-scores' render={() => (
@@ -252,7 +243,6 @@ class App extends Component {
                 <Redirect to='/login' />
             )} />
           </Switch>
-        </Router>
       </div>
     );
   }
