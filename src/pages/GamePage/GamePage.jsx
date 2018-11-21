@@ -29,6 +29,7 @@ const GamePage = (props) => {
           />
           <GameTimer
             isTiming={props.isTiming}
+            elapsedTime={props.elapsedTime}
             handleTimerUpdate={props.handleTimerUpdate}
           />
           <Link className='btn btn-default' style={{margin: '0 10px'}} to='/settings'>Difficulty</Link>
