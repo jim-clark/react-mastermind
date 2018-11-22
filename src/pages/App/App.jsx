@@ -26,8 +26,6 @@ class App extends Component {
       { scores: [], difficultyLevel: 0, colors: colorTable[0].colors },
       this.getInitialState()
     );
-    // Data that you don't want to trigger rendering
-    this.elapsedTime = 0;
   }
 
   getInitialState() {
@@ -36,6 +34,7 @@ class App extends Component {
       code: this.genCode(colorTable[colorIdx].colors.length),
       selColorIdx: 0,
       guesses: [this.getNewGuess()],
+      elapsedTime: 0,
       isTiming: true
     };
   }
@@ -77,7 +76,6 @@ class App extends Component {
   }
 
   handleNewGameClick = () => {
-    this.resetTimer();
     this.setState(this.getInitialState());
   }
 
@@ -138,7 +136,7 @@ class App extends Component {
 
     if (perfect === 4) {
       this.setState(
-        (prevState) => ({ finalTime: this.elapsedTime }),
+        (prevState) => ({ finalTime: this.state.elapsedTime }),
         // do the rest of the win logic in this callback
         () => {
           // Check if high-score
@@ -166,9 +164,8 @@ class App extends Component {
     });
   }
 
-  handleTimerUpdate = (seconds, resetFn) => {
-    this.resetTimer = resetFn;
-    this.elapsedTime = seconds;
+  handleTimerUpdate = (seconds) => {
+    this.setState((curState) => ({elapsedTime: ++curState.elapsedTime}));
   }
 
   handleLogout = () => {
@@ -201,6 +198,7 @@ class App extends Component {
                 colors={this.state.colors}
                 selColorIdx={this.state.selColorIdx}
                 guesses={this.state.guesses}
+                elapsedTime={this.state.elapsedTime}
                 isTiming={this.state.isTiming}
                 handleColorSelection={this.handleColorSelection}
                 handleNewGameClick={this.handleNewGameClick}
@@ -209,7 +207,6 @@ class App extends Component {
                 handleTimerUpdate={this.handleTimerUpdate}
                 handleLogout={this.handleLogout}
                 user={this.state.user}
-                startTime={this.elapsedTime}
               />
             } />
             <Route exact path='/settings' render={({ history }) =>
