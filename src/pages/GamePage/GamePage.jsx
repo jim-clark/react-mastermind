@@ -30,6 +30,7 @@ const GamePage = (props) => {
             selColorIdx={props.selColorIdx}
           />
           <GameTimer
+            elapsedTime={props.elapsedTime}
             isTiming={props.isTiming}
             handleTimerUpdate={props.handleTimerUpdate}
           />

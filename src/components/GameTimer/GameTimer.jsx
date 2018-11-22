@@ -8,22 +8,11 @@ function formatTime(seconds) {
 }
 
 class GameTimer extends Component {
-  // ES7+ Class property syntax
-  state = {
-    elapsedTime: 0
-  };
 
   handleTick = () => {
     if (!this.props.isTiming) return;
-    this.setState(
-      curState => ({elapsedTime: ++curState.elapsedTime}),
-      () => { this.props.handleTimerUpdate(this.state.elapsedTime, this.resetTimer); }
-    );
+    this.props.handleTimerUpdate();
   };
-
-  resetTimer = () => {
-    this.setState({ elapsedTime: 0 });
-  }
 
   /*--- Lifecycle Methods ---*/
 
@@ -38,7 +27,7 @@ class GameTimer extends Component {
   render() {
     return (
       <div className={styles.GameTimer}>
-        {formatTime(this.state.elapsedTime)}
+        {formatTime(this.props.elapsedTime)}
       </div>
     );
   }
